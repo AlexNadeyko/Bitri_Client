@@ -1,5 +1,7 @@
 package Controllers;
 
+import MessagesClientServer.InnerMessage;
+import MessagesClientServer.InnerMessageSystemOperationResult;
 import Models.ClientWorkerSystemSignUp;
 import Views.*;
 
@@ -24,15 +26,38 @@ public class Controller implements ObserverChangeViewApp {
 
    public class BtnSubmitSignUpPanelListener implements ActionListener{
 
-       @Override
-       public void actionPerformed(ActionEvent e) {
-           PanelSignUp panelSignUp = (PanelSignUp) mainFrame.getPanelMain();
-           String[] userData;
-           userData = panelSignUp.getUserData();
-           ClientWorkerSystemSignUp clientWorkerSystemSignUp = new ClientWorkerSystemSignUp(userData);
-           new Thread(clientWorkerSystemSignUp).start();
-       }
-   }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            PanelSignUp panelSignUp = (PanelSignUp) mainFrame.getPanelMain();
+            String[] userData;
+            userData = panelSignUp.getUserData();
+            ClientWorkerSystemSignUp clientWorkerSystemSignUp = new ClientWorkerSystemSignUp(userData);
+            clientWorkerSystemSignUp.addObserver(new ControllerSignUpListener());
+            new Thread(clientWorkerSystemSignUp).start();
+        }
+    }
+
+    public class ControllerSignUpListener implements ObserverSignUp{
+
+        @Override
+        public void update(InnerMessage innerMessage) {
+            InnerMessageSystemOperationResult innerMessageServerResponse =
+                    (InnerMessageSystemOperationResult) innerMessage;
+
+            boolean answer = innerMessageServerResponse.getAnswer();
+            String description = innerMessageServerResponse.getDescription();
+
+            ///
+            System.out.println("!!!!answer - " + answer);
+            System.out.println("!!!!description - " + description);
+            ///
+            if (answer){
+                mainFrame.displayInfoDialog(description, ViewResources.ColorOfTextDialog.POSITIVE);
+            }else{
+                mainFrame.displayInfoDialog(description, ViewResources.ColorOfTextDialog.NEGATIVE);
+            }
+        }
+    }
 
 
     @Override

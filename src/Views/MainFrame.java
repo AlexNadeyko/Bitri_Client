@@ -125,4 +125,10 @@ public class MainFrame extends JFrame implements NotifierChangeViewApp {
     public void setController(Controller controller) {
         this.controller = controller;
     }
+
+    public void displayInfoDialog(String content, ViewResources.ColorOfTextDialog colorOfText){
+        InfromationDialog dialogInformationToUser =
+                new InfromationDialog(this, true, colorOfText.getColor(), content);
+
+    }
 }

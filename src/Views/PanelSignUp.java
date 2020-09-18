@@ -359,4 +359,10 @@ public class PanelSignUp extends JPanel {
         return userData;
     }
 
+
+    /*public void displayInfoDialog(String content, int width, int height){
+        InfromationDialog dialogInformationToUser = new InfromationDialog(frame);
+
+    }*/
+
 }

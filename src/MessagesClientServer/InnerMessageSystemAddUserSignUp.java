@@ -1,6 +1,11 @@
 package MessagesClientServer;
 
+import Controllers.NotifierSignUp;
+import Controllers.ObserverSignUp;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InnerMessageSystemAddUserSignUp implements InnerMessage, Serializable {
 
@@ -9,6 +14,7 @@ public class InnerMessageSystemAddUserSignUp implements InnerMessage, Serializab
     private String name;
     private String surname;
 
+
     private static final long serialVersionUID = 6529685098267757691L;
 
     public InnerMessageSystemAddUserSignUp(String[] userData){
@@ -16,6 +22,7 @@ public class InnerMessageSystemAddUserSignUp implements InnerMessage, Serializab
         surname = userData[1];
         login = userData[2];
         password = userData[3];
+
     }
 
 
@@ -50,4 +57,7 @@ public class InnerMessageSystemAddUserSignUp implements InnerMessage, Serializab
     public void setPassword(String password) {
         this.password = password;
     }
+
+
+
 }
