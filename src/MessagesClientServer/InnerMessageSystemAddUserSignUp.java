@@ -1,11 +1,6 @@
 package MessagesClientServer;
 
-import Controllers.NotifierSignUp;
-import Controllers.ObserverSignUp;
-
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class InnerMessageSystemAddUserSignUp implements InnerMessage, Serializable {
 

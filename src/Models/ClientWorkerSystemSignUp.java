@@ -1,7 +1,7 @@
 package Models;
 
-import Controllers.NotifierSignUp;
-import Controllers.ObserverSignUp;
+import Controllers.NotifierClientWorker;
+import Controllers.ObserverClientWorker;
 import MessagesClientServer.*;
 
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ClientWorkerSystemSignUp implements Runnable, NotifierSignUp {
+public class ClientWorkerSystemSignUp implements Runnable, NotifierClientWorker {
 
     private Socket socketServer;
     private ObjectInputStream objectInputStream;
@@ -42,6 +42,14 @@ public class ClientWorkerSystemSignUp implements Runnable, NotifierSignUp {
         }
     }
 
+    @Override
+    public void run() {
+        sendUserData();
+        InnerMessageSystemOperationResult innerMessageServerResponse = waitResponseServer();
+        notifyObserver(innerMessageServerResponse);
+
+    }
+
     private void sendUserData(){
 
         try {
@@ -49,17 +57,12 @@ public class ClientWorkerSystemSignUp implements Runnable, NotifierSignUp {
             BasicMessage basicMessage = new BasicMessage(TypeOfInnerMessage.ADD_USER_SIGN_UP, innerMessage);
             objectOutputStream.writeObject(basicMessage);
             objectOutputStream.flush();
+            //
+            System.out.println("***Client/ClientWorkerSystemSignUp: send user's data to server***");
+            //
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void run() {
-        sendUserData();
-        InnerMessageSystemOperationResult innerMessageServerResponse = waitResponseServer();
-        notifyObserver(innerMessageServerResponse);
-
     }
 
     private InnerMessageSystemOperationResult waitResponseServer() {
@@ -70,7 +73,7 @@ public class ClientWorkerSystemSignUp implements Runnable, NotifierSignUp {
             ObjectInputStream objectInputStream  = new ObjectInputStream(socketServer.getInputStream());
             BasicMessage basicMessage = (BasicMessage) objectInputStream.readObject();
             innerMessage = (InnerMessageSystemOperationResult) basicMessage.getInnerMessage();
-            System.out.println("***Client: get response from server / sign up operation***");
+            System.out.println("***Client/ClientWorkerSystemSignUp: get response from server***");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -83,12 +86,12 @@ public class ClientWorkerSystemSignUp implements Runnable, NotifierSignUp {
 
 
     @Override
-    public void addObserver(ObserverSignUp observer) {
+    public void addObserver(ObserverClientWorker observer) {
         observers.add(observer);
     }
 
     @Override
-    public void removeObserver(ObserverSignUp observer) {
+    public void removeObserver(ObserverClientWorker observer) {
         if (observers.indexOf(observer) >= 0){
             observers.remove(observer);
         }
@@ -97,7 +100,7 @@ public class ClientWorkerSystemSignUp implements Runnable, NotifierSignUp {
     @Override
     public void notifyObserver(InnerMessage innerMessage) {
         for (int i = 0; i < observers.size(); i++) {
-            ObserverSignUp observer = (ObserverSignUp) observers.get(i);
+            ObserverClientWorker observer = (ObserverClientWorker) observers.get(i);
             observer.update(innerMessage);
         }
     }

@@ -1,5 +1,7 @@
 package Views;
 
+import Controllers.Controller;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,8 +15,8 @@ public class PanelLogin extends JPanel {
     private SpringLayout layout;
 
     private JLabel labelTitle;
-    private JLabel labelUsername;
-    private JTextField textUsername;
+    private JLabel labelLogin;
+    private JTextField textLogin;
     private JLabel labelPassword;
     private JPasswordField textPassword;
     private JButton btnSubmit;
@@ -58,31 +60,29 @@ public class PanelLogin extends JPanel {
         labelTitle.setFont(ViewResources.getFontBellMtBold());
 
 
-        labelUsername = new JLabel("Username");
-        labelUsername.setForeground(ViewResources.COLOR_VIOLET);
-        labelUsername.setFont(ViewResources.getFontBellMtBold().deriveFont(25f));
+        labelLogin = new JLabel("Login");
+        labelLogin.setForeground(ViewResources.COLOR_VIOLET);
+        labelLogin.setFont(ViewResources.getFontBellMtBold().deriveFont(25f));
 
 
-        textUsername = new JTextField();
-        textUsername.setPreferredSize(new Dimension(600, 40));
-        textUsername.setFont(ViewResources.getFontBellMt().deriveFont(25f));
-        textUsername.setBackground(ViewResources.COLOR_TEXT_FIELD);
-        textUsername.setForeground(ViewResources.COLOR_VIOLET);
-        textUsername.setBorder(BorderFactory.createMatteBorder(2,7,2,2, ViewResources.COLOR_TEXT_FIELD_BORDER ));
-        textUsername.setCaretColor(ViewResources.COLOR_VIOLET );
+        textLogin = new JTextField();
+        textLogin.setPreferredSize(new Dimension(600, 40));
+        textLogin.setFont(ViewResources.getFontBellMt().deriveFont(25f));
+        textLogin.setBackground(ViewResources.COLOR_TEXT_FIELD);
+        textLogin.setForeground(ViewResources.COLOR_VIOLET);
+        textLogin.setBorder(BorderFactory.createMatteBorder(2,7,2,2, ViewResources.COLOR_TEXT_FIELD_BORDER ));
+        textLogin.setCaretColor(ViewResources.COLOR_VIOLET );
 
-        textUsername.addFocusListener(new FocusListener() {
+        textLogin.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                textUsername.setBorder(BorderFactory.createMatteBorder(2,7,2,2, ViewResources.COLOR_VIOLET ));
+                textLogin.setBorder(BorderFactory.createMatteBorder(2,7,2,2, ViewResources.COLOR_VIOLET ));
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                System.out.println("focusLost");
-                if (textUsername.getText().length() == 0){
-                    System.out.println("null");
-                    textUsername.setBorder(BorderFactory.createMatteBorder(2,7,2,2, ViewResources.COLOR_TEXT_FIELD_BORDER ));
+                if (textLogin.getText().length() == 0){
+                    textLogin.setBorder(BorderFactory.createMatteBorder(2,7,2,2, ViewResources.COLOR_TEXT_FIELD_BORDER ));
                 }
             }
         });
@@ -109,9 +109,7 @@ public class PanelLogin extends JPanel {
 
             @Override
             public void focusLost(FocusEvent e) {
-                System.out.println("focusLost");
                 if (textPassword.getText().length() == 0){
-                    System.out.println("null");
                     textPassword.setBorder(BorderFactory.createMatteBorder(2,7,2,2, ViewResources.COLOR_TEXT_FIELD_BORDER ));
                 }
             }
@@ -131,6 +129,10 @@ public class PanelLogin extends JPanel {
         btnSubmit.setOpaque(false);
 
 
+        Controller controller = frame.getController();
+        btnSubmit.addActionListener(controller.new BtnSubmitLoginPanelListener());
+
+
         add(btnReturn);
         layout.putConstraint(SpringLayout.NORTH, btnReturn, 10, SpringLayout.NORTH, this);
         layout.putConstraint(SpringLayout.WEST, btnReturn, 10, SpringLayout.WEST, this);
@@ -139,16 +141,16 @@ public class PanelLogin extends JPanel {
         layout.putConstraint(SpringLayout.NORTH, labelTitle, 20, SpringLayout.NORTH,this);
         layout.putConstraint(SpringLayout.WEST, labelTitle, 330, SpringLayout.WEST,this);
 
-        add(labelUsername);
-        layout.putConstraint(SpringLayout.NORTH, labelUsername, 120, SpringLayout.NORTH, labelTitle);
-        layout.putConstraint(SpringLayout.WEST, labelUsername, 100, SpringLayout.WEST, this);
+        add(labelLogin);
+        layout.putConstraint(SpringLayout.NORTH, labelLogin, 120, SpringLayout.NORTH, labelTitle);
+        layout.putConstraint(SpringLayout.WEST, labelLogin, 100, SpringLayout.WEST, this);
 
-        add(textUsername);
-        layout.putConstraint(SpringLayout.NORTH, textUsername, 40, SpringLayout.NORTH, labelUsername);
-        layout.putConstraint(SpringLayout.WEST, textUsername, 100, SpringLayout.WEST, this);
+        add(textLogin);
+        layout.putConstraint(SpringLayout.NORTH, textLogin, 40, SpringLayout.NORTH, labelLogin);
+        layout.putConstraint(SpringLayout.WEST, textLogin, 100, SpringLayout.WEST, this);
 
         add(labelPassword);
-        layout.putConstraint(SpringLayout.NORTH, labelPassword, 80, SpringLayout.NORTH, textUsername);
+        layout.putConstraint(SpringLayout.NORTH, labelPassword, 80, SpringLayout.NORTH, textLogin);
         layout.putConstraint(SpringLayout.WEST, labelPassword, 100, SpringLayout.WEST, this);
 
         add(textPassword);
@@ -161,4 +163,10 @@ public class PanelLogin extends JPanel {
     }
 
 
+    public String[] getUserData() {
+        String[] userData = new String[2];
+        userData[0] = textLogin.getText();
+        userData[1] = textPassword.getText();
+        return userData;
+    }
 }

@@ -10,6 +10,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class PanelSignUp extends JPanel {
 
@@ -31,6 +32,8 @@ public class PanelSignUp extends JPanel {
     private JButton btnSubmit;
     private JButton btnReturn;
 
+    private ArrayList<JTextField> arrayFields;
+
     private Font fontBellMTBold;
     private Font fontBellMT;
 
@@ -41,6 +44,7 @@ public class PanelSignUp extends JPanel {
     public PanelSignUp(MainFrame frame)
     {
         this.frame = frame;
+        this.arrayFields = new ArrayList<JTextField>();
         initUI();
     }
 
@@ -84,7 +88,6 @@ public class PanelSignUp extends JPanel {
         }
 
 
-
         colorViolet = new Color(170, 51, 255);
         colorTextField = new Color(63,65,72);
         colorTextFieldBorder = new Color(87,90,100);
@@ -107,6 +110,7 @@ public class PanelSignUp extends JPanel {
         textName.setForeground(colorViolet);
         textName.setBorder(BorderFactory.createMatteBorder(2,7,2,2, colorTextFieldBorder ));
         textName.setCaretColor(colorViolet);
+        arrayFields.add(textName);
 
 
         labelSurname = new JLabel("Surname");
@@ -121,6 +125,7 @@ public class PanelSignUp extends JPanel {
         textSurname.setForeground(colorViolet);
         textSurname.setBorder(BorderFactory.createMatteBorder(2,7,2,2, colorTextFieldBorder ));
         textSurname.setCaretColor(colorViolet);
+        arrayFields.add(textSurname);
 
 
         labelLogin = new JLabel("Login");
@@ -135,28 +140,8 @@ public class PanelSignUp extends JPanel {
         textLogin.setForeground(colorViolet);
         textLogin.setBorder(BorderFactory.createMatteBorder(2,7,2,2, colorTextFieldBorder ));
         textLogin.setCaretColor(colorViolet);
+        arrayFields.add(textLogin);
 
-        /*textUsername.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                if (textUsername.getText() != null || textUsername.getText() != ""){
-                    textUsername.setBorder(BorderFactory.createMatteBorder(2,7,2,2, colorViolet ));
-                }
-                else{
-                    textUsername.setBorder(BorderFactory.createMatteBorder(2,7,2,2, colorTextFieldBorder ));
-                }
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-
-            }
-        });*/
 
         textName.addFocusListener(new FocusListener() {
             @Override
@@ -166,9 +151,7 @@ public class PanelSignUp extends JPanel {
 
             @Override
             public void focusLost(FocusEvent e) {
-                System.out.println("focusLost");
                 if (textName.getText().length() == 0){
-                    System.out.println("null");
                     textName.setBorder(BorderFactory.createMatteBorder(2,7,2,2, colorTextFieldBorder ));
                 }
             }
@@ -183,9 +166,7 @@ public class PanelSignUp extends JPanel {
 
             @Override
             public void focusLost(FocusEvent e) {
-                System.out.println("focusLost");
                 if (textSurname.getText().length() == 0){
-                    System.out.println("null");
                     textSurname.setBorder(BorderFactory.createMatteBorder(2,7,2,2, colorTextFieldBorder ));
                 }
             }
@@ -200,9 +181,7 @@ public class PanelSignUp extends JPanel {
 
             @Override
             public void focusLost(FocusEvent e) {
-                System.out.println("focusLost");
                 if (textLogin.getText().length() == 0){
-                    System.out.println("null");
                     textLogin.setBorder(BorderFactory.createMatteBorder(2,7,2,2, colorTextFieldBorder ));
                 }
             }
@@ -222,6 +201,7 @@ public class PanelSignUp extends JPanel {
         textPassword.setForeground(colorViolet);
         textPassword.setBorder(BorderFactory.createMatteBorder(2,7,2,2, colorTextFieldBorder ));
         textPassword.setCaretColor(colorViolet);
+        arrayFields.add(textPassword);
 
         textPassword.addFocusListener(new FocusListener() {
             @Override
@@ -231,9 +211,7 @@ public class PanelSignUp extends JPanel {
 
             @Override
             public void focusLost(FocusEvent e) {
-                System.out.println("focusLost");
                 if (textPassword.getText().length() == 0){
-                    System.out.println("null");
                     textPassword.setBorder(BorderFactory.createMatteBorder(2,7,2,2, colorTextFieldBorder ));
                 }
             }
@@ -252,6 +230,7 @@ public class PanelSignUp extends JPanel {
         textPasswordConfirm.setForeground(colorViolet);
         textPasswordConfirm.setBorder(BorderFactory.createMatteBorder(2,7,2,2, colorTextFieldBorder ));
         textPasswordConfirm.setCaretColor(colorViolet);
+        arrayFields.add(textPasswordConfirm);
 
 
         textPasswordConfirm.addFocusListener(new FocusListener() {
@@ -262,9 +241,7 @@ public class PanelSignUp extends JPanel {
 
             @Override
             public void focusLost(FocusEvent e) {
-                System.out.println("focusLost");
                 if (textPasswordConfirm.getText().length() == 0){
-                    System.out.println("null");
                     textPasswordConfirm.setBorder(BorderFactory.createMatteBorder(2,7,2,2, colorTextFieldBorder ));
                 }
             }
@@ -357,6 +334,12 @@ public class PanelSignUp extends JPanel {
         userData[3] = textPassword.getText() == null ? "" : textPassword.getText();
 
         return userData;
+    }
+
+    public void setAllFieldsEmpty(){
+        for (int i = 0; i < arrayFields.size(); i++){
+            arrayFields.get(i).setText(null);
+        }
     }
 
 

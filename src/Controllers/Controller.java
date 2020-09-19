@@ -2,6 +2,7 @@ package Controllers;
 
 import MessagesClientServer.InnerMessage;
 import MessagesClientServer.InnerMessageSystemOperationResult;
+import Models.ClientWorkerSystemLogin;
 import Models.ClientWorkerSystemSignUp;
 import Views.*;
 
@@ -37,7 +38,22 @@ public class Controller implements ObserverChangeViewApp {
         }
     }
 
-    public class ControllerSignUpListener implements ObserverSignUp{
+    public class BtnSubmitLoginPanelListener implements ActionListener{
+
+       @Override
+        public void actionPerformed(ActionEvent e) {
+            PanelLogin panelLogin = (PanelLogin) mainFrame.getPanelMain();
+            String[] userData;
+            userData = panelLogin.getUserData();
+            ClientWorkerSystemLogin clientWorkerSystemLogin = new ClientWorkerSystemLogin(userData);
+            clientWorkerSystemLogin.addObserver(new ControllerLoginListener());
+            new Thread(clientWorkerSystemLogin).start();
+        }
+    }
+
+
+
+    public class ControllerSignUpListener implements ObserverClientWorker {
 
         @Override
         public void update(InnerMessage innerMessage) {
@@ -47,13 +63,32 @@ public class Controller implements ObserverChangeViewApp {
             boolean answer = innerMessageServerResponse.getAnswer();
             String description = innerMessageServerResponse.getDescription();
 
-            ///
-            System.out.println("!!!!answer - " + answer);
-            System.out.println("!!!!description - " + description);
-            ///
             if (answer){
                 mainFrame.displayInfoDialog(description, ViewResources.ColorOfTextDialog.POSITIVE);
+                PanelSignUp panelSignUp = (PanelSignUp) mainFrame.getPanelMain();
+                panelSignUp.setAllFieldsEmpty();
             }else{
+                mainFrame.displayInfoDialog(description, ViewResources.ColorOfTextDialog.NEGATIVE);
+            }
+        }
+    }
+
+    public class ControllerLoginListener implements ObserverClientWorker{
+
+        @Override
+        public void update(InnerMessage innerMessage) {
+            InnerMessageSystemOperationResult innerMessageServerResponse =
+                    (InnerMessageSystemOperationResult) innerMessage;
+
+            boolean answer = innerMessageServerResponse.getAnswer();
+            String description = innerMessageServerResponse.getDescription();
+
+            if (answer){
+                mainFrame.dispose();
+                //
+                System.out.println("!!!there must opens new jframe");
+                //
+            }else {
                 mainFrame.displayInfoDialog(description, ViewResources.ColorOfTextDialog.NEGATIVE);
             }
         }

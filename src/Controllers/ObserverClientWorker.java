@@ -2,6 +2,6 @@ package Controllers;
 
 import MessagesClientServer.InnerMessage;
 
-public interface ObserverSignUp {
+public interface ObserverClientWorker {
     void update(InnerMessage innerMessage);
 }
