@@ -7,24 +7,26 @@ import java.awt.event.ActionListener;
 
 public class InfromationDialog extends JDialog {
 
-    PanelTitleBarDialog panelTitleBar;
-    JPanel panelMain;
-    JLabel labelContent;
-    JButton btnOk;
-    SpringLayout layoutPanelMain;
+    private Frame ownerFrame;
+    private PanelTitleBarDialog panelTitleBar;
+    private JPanel panelMain;
+    private SpringLayout layoutPanelMain;
 
-    JTextArea textAreaContent;
-    JScrollPane scrollPaneTextAreaContent;
+    private JButton btnOk;
+    private JTextArea textAreaContent;
+    private JScrollPane scrollPaneTextAreaContent;
 
 
     public InfromationDialog(Frame owner, boolean modal, Color colorOfText, String textOfMessage) {
         super(owner, modal);
+        this.ownerFrame = owner;
         initUI(colorOfText, textOfMessage);
     }
 
 
     public InfromationDialog(Frame owner, Color colorOfText, String textOfMessage) {
         super(owner);
+        this.ownerFrame = owner;
         initUI(colorOfText, textOfMessage);
     }
 
@@ -82,6 +84,7 @@ public class InfromationDialog extends JDialog {
         add(BorderLayout.NORTH, panelTitleBar);
         add(BorderLayout.CENTER, panelMain);
 
+        setLocationRelativeTo(ownerFrame);
         setUndecorated(true);
         setVisible(true);
     }
